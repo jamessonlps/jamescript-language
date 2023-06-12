@@ -1,15 +1,10 @@
 
+const x : integer
+const y : integer
 
-const x : integer = 1
-const y : integer = 10
+const a : string = "James"
+const b : string = " Bond"
 
-while (x <= y) {
-  if (y > x) {
-    stdout("De fato x <= y:", x, y)
-  } else {
-    stdout("Agora vai!!!")
-  }
-  x = x + 1
-}
-
-stdout(10, 20, "Oi")
+// Concatena, compara se igual, compara se diferente
+stdout(a . b, a == b, a != b)
+// James Bond 0 1

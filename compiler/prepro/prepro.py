@@ -8,7 +8,7 @@ class PrePro():
     Remove all comments in the code.
     @param `text`: str
     """
-    removed_comments = re.sub(pattern=r"#.*", repl="", string=text)
+    removed_comments = re.sub(pattern=r"\/\/.*", repl="", string=text)
     # removed_final_white_spaces = re.sub(pattern=r"\s+$", repl="", string=removed_comments)
     return removed_comments
 

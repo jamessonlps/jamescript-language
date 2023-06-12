@@ -61,6 +61,10 @@ class BinOp(Node):
     if (self.value == "=="):
       result = 1 if left == right else 0
       return TypeValue("integer", result)
+
+    elif (self.value == "!="):
+      result = 1 if left != right else 0
+      return TypeValue("integer", result)
     
     elif (self.value == ">"):
       result = 1 if left > right else 0
