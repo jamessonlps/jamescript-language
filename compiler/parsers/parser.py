@@ -326,7 +326,6 @@ class Parser():
           if not isinstance(Parser.tokenizer.next, (IntegerTypeToken, StringTypeToken)):
             raise SyntaxError(f"Unrecognized type: {Parser.tokenizer.next._value}")
           function_return_type = Parser.tokenizer.next.value
-          print(f"\n{function_return_type}\n")
 
           Parser.tokenizer.selectNext()
           if not isinstance(Parser.tokenizer.next, FullArrowToken):
