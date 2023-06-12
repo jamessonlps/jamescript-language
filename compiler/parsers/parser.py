@@ -412,10 +412,15 @@ class Parser():
           raise SyntaxError("An opening parenthesis is missing on stdout call.")
         
         rel_expression_node = Parser.parseRelExpression()
+        statement.children.append(rel_expression_node)
+
+        while isinstance(Parser.tokenizer.next, CommaToken):
+          rel_expression_node = Parser.parseRelExpression()
+          statement.children.append(rel_expression_node)
+
         if not isinstance(Parser.tokenizer.next, RightParenthesisToken):
           raise SyntaxError("You must close an opened parenthesis on the stdout invocation.")
         
-        statement.children.append(rel_expression_node)
         Parser.tokenizer.selectNext()
           
       elif isinstance(Parser.tokenizer.next, WhileToken):

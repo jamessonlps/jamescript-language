@@ -5,6 +5,7 @@ class StdoutNode(Node):
     super().__init__(value=0, children=[])
   
   def evaluate(self, symbol_table) -> None:
-    print(self.children[0].evaluate(symbol_table).value)
+    results = [self.children[i].evaluate(symbol_table).value for i in range(len(self.children))]
+    print(*results)
 
 

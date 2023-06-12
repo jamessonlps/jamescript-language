@@ -1,20 +1,11 @@
 
-def factorial(integer a) : integer {
-  const factor : integer = 1
-  const index : integer = 1
 
-  while (index < a) {
-    factor = factor * index
-    index = index + 1
+const x : integer = 1
+const y : integer = 10
 
-    if (index == a) {
-      stdout("Fatorial atingido!")
-    }
-  }
-
-  return factor
+while (x < y) {
+  stdout("x =", x)
+  x = x + 1
 }
 
-const test : integer = factorial(5)
-
-stdout(test)
+stdout(10, 20, "Oi")
