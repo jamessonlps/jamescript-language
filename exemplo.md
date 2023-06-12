@@ -1,43 +1,37 @@
 ```ts
 
+// Retorna o máximo de 2 elementos
+def max(integer m, integer n) : integer {
+  const max : integer
 
-
-def factorial(integer a) : integer {
-  const factor : integer = 1
-  const index : integer = 1
-
-  while (index <= a) {
-    factor = factor * index
-    index = index + 1
+  if (m >= n) {
+    max = m
+  } else {
+    max = n
   }
 
-  return factor
+  return max
 }
 
-const x : integer = factorial(5)
+// Retorna o mínimo de 2 elementos
+const min = (integer m, integer n) : integer => {
+  const min : integer
 
-stdout("Fatorial de", 5, "é:", x)
-// Fatorial de 5 é: 120
+  if (m <= n) {
+    min = m
+  } else {
+    min = n
+  }
 
-
-
-const x : integer
-const y : integer
-
-const a : string = "James"
-const b : string = " Bond"
-
-x = a == b
-y = a != b
-
-// Concatena, compara se igual, compara se diferente
-stdout(a . b, x, y)
-// James Bond 0 1
-
-
-
-const arrow_function = (integer a, integer b) : integer => {
-  
+  return min
 }
+
+const x : integer = 10
+const y : integer = 20
+const z : integer = 30
+
+stdout("Máximo entre y e z:", max(y, z))
+stdout("Mínimo entre x e y:", min(x, y))
+
 
 ```

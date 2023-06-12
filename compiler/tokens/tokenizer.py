@@ -95,25 +95,6 @@ class Tokenizer():
         if position < self._source_size:
           current_token = self.source[position]
       next_token = NumberToken(int(number_string))
-
-
-    # elif current_token == "&":
-    #   position += 1
-    #   current_token = self.source[position]
-    #   if current_token == "&":
-    #     next_token = LogicAndToken()
-    #     position += 1
-    #   else:
-    #     raise TypeError("Invalid token. Did you mean '&&'?")
-    
-    # elif current_token == "|":
-    #   position += 1
-    #   current_token = self.source[position]
-    #   if current_token == "|":
-    #     next_token = LogicOrToken()
-    #     position += 1
-    #   else:
-    #     raise TypeError("Invalid token. Did you mean '||'?")
     
     elif current_token == "=":
       position += 1
@@ -123,6 +104,9 @@ class Tokenizer():
         position += 1
       elif current_token.isspace():
         next_token = EqualsToken()
+        position += 1
+      elif current_token == ">":
+        next_token = FullArrowToken()
         position += 1
       else:
         raise TypeError("Invalid token. Token received after '=': ", current_token)

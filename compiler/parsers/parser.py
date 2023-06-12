@@ -281,29 +281,98 @@ class Parser():
         identifier_node = IdentifierNode(Parser.tokenizer.next._value)
         Parser.tokenizer.selectNext()
 
-        if not isinstance(Parser.tokenizer.next, VariableDeclarationToken):
-          raise SyntaxError(f"After declare a variable, you must define its type. Token found: {Parser.tokenizer.next._value}")
-        
-        Parser.tokenizer.selectNext()
-        
-        if not isinstance(Parser.tokenizer.next, (IntegerTypeToken, StringTypeToken)):
-          raise SyntaxError(f"After declare a variable, you must use a type. Token found: {Parser.tokenizer.next._value}")
-        
-        type_value = Parser.tokenizer.next.value
-        Parser.tokenizer.selectNext()
+        if not isinstance(Parser.tokenizer.next, (EqualsToken, VariableDeclarationToken)):
+          raise SyntaxError(f"You must declare a variable or a function. Token found: {Parser.tokenizer.next._value}")
         
         if isinstance(Parser.tokenizer.next, EqualsToken):
-          rel_expression_node = Parser.parseRelExpression()
-          # statement.children.append(rel_expression_node)
-          statement = VariableDeclarationNode(
-            value=type_value, 
-            children=[identifier_node, rel_expression_node]
+          Parser.tokenizer.selectNext()
+
+          if not isinstance(Parser.tokenizer.next, LeftParenthesisToken):
+            raise SyntaxError(f"You forgot to open a parenthesis. Token found: {Parser.tokenizer.next._value}")
+          
+          Parser.tokenizer.selectNext()
+          function_args = []
+          while not isinstance(Parser.tokenizer.next, RightParenthesisToken):
+            if not isinstance(Parser.tokenizer.next, (IntegerTypeToken, StringTypeToken)):
+              raise SyntaxError(f"You must define a type to the function parameter. Token found: {Parser.tokenizer.next._value}")
+
+            var_type = Parser.tokenizer.next.value
+
+            Parser.tokenizer.selectNext()
+            if not isinstance(Parser.tokenizer.next, IdentifierToken):
+              raise SyntaxError(f"You must define a name to the function parameter. Token found: {Parser.tokenizer.next._value}")
+            
+            var_identifier = IdentifierNode(Parser.tokenizer.next._value)
+
+            function_args.append(
+              VariableDeclarationNode(
+                value=var_type, 
+                children=[var_identifier]
+                )
+              )
+
+            Parser.tokenizer.selectNext()
+            if isinstance(Parser.tokenizer.next, CommaToken):
+              Parser.tokenizer.selectNext()
+            else:
+              if not isinstance(Parser.tokenizer.next, RightParenthesisToken):
+                raise SyntaxError(f"You must close the function parameter declaration with ')'. Token found: {Parser.tokenizer.next._value}")
+              
+          Parser.tokenizer.selectNext()
+          if not isinstance(Parser.tokenizer.next, VariableDeclarationToken):
+            raise SyntaxError(f"You must define a type for the function return. Token received: {Parser.tokenizer.next._value}")
+          
+          Parser.tokenizer.selectNext()
+          if not isinstance(Parser.tokenizer.next, (IntegerTypeToken, StringTypeToken)):
+            raise SyntaxError(f"Unrecognized type: {Parser.tokenizer.next._value}")
+          function_return_type = Parser.tokenizer.next.value
+          print(f"\n{function_return_type}\n")
+
+          Parser.tokenizer.selectNext()
+          if not isinstance(Parser.tokenizer.next, FullArrowToken):
+            raise SyntaxError(f"You must use '=>' to set the function body. Token received: {Parser.tokenizer.next._value}")
+
+          Parser.tokenizer.selectNext()
+          if not isinstance(Parser.tokenizer.next, LeftBarcesToken):
+            raise SyntaxError(f"You must open a function declaration with '{{'. Token received: {Parser.tokenizer.next._value}")
+          
+          function_body = BlockNode()
+          Parser.tokenizer.selectNext()
+          while is_statement_token(Parser.tokenizer.next):
+            function_body.children.append(Parser.parseStatement())
+            Parser.tokenizer.selectNext()
+
+          if not isinstance(Parser.tokenizer.next, RightBarcesToken):
+            raise SyntaxError(f"You must close a function declaration with '}}'. Token received: {Parser.tokenizer.next._value}")
+        
+          Parser.tokenizer.selectNext()
+          statement = FunctionDeclarationNode(
+            value=function_return_type,
+            children=[identifier_node, *function_args, function_body]
           )
-        else:
-          statement = VariableDeclarationNode(
-            value=type_value, 
-            children=[identifier_node]
-          )
+
+
+        elif isinstance(Parser.tokenizer.next, VariableDeclarationToken):
+          Parser.tokenizer.selectNext()
+          
+          if not isinstance(Parser.tokenizer.next, (IntegerTypeToken, StringTypeToken)):
+            raise SyntaxError(f"After declare a variable, you must use a type. Token found: {Parser.tokenizer.next._value}")
+          
+          type_value = Parser.tokenizer.next.value
+          Parser.tokenizer.selectNext()
+          
+          if isinstance(Parser.tokenizer.next, EqualsToken):
+            rel_expression_node = Parser.parseRelExpression()
+            # statement.children.append(rel_expression_node)
+            statement = VariableDeclarationNode(
+              value=type_value, 
+              children=[identifier_node, rel_expression_node]
+            )
+          else:
+            statement = VariableDeclarationNode(
+              value=type_value, 
+              children=[identifier_node]
+            )
 
       elif isinstance(Parser.tokenizer.next, IdentifierToken):
         identifier_value = Parser.tokenizer.next._value
@@ -385,10 +454,6 @@ class Parser():
         if not isinstance(Parser.tokenizer.next, LeftBarcesToken):
           raise SyntaxError(f"You must open a function declaration with '{{'. Token received: {Parser.tokenizer.next._value}")
         
-        # Parser.tokenizer.selectNext()
-        # if not isinstance(Parser.tokenizer.next, BreakLineToken):
-        #   raise SyntaxError(f"You must use a break line after function declaration. Token received: {Parser.tokenizer.next._value}")
-        
         function_body = BlockNode()
         Parser.tokenizer.selectNext()
         while is_statement_token(Parser.tokenizer.next):
@@ -403,25 +468,6 @@ class Parser():
           value=function_return_type,
           children=[function_identifier, *function_args, function_body]
         )
-
-        # Parser.tokenizer.selectNext()
-        # if not isinstance(Parser.tokenizer.next, BreakLineToken):
-        #   raise SyntaxError(f"You must use a break line after function declaration. Token received: {Parser.tokenizer.next._value}")
-
-        # function_body = BlockNode()
-        # Parser.tokenizer.selectNext()
-        # while is_statement_token(Parser.tokenizer.next):
-        #   function_body.children.append(Parser.parseStatement())
-        #   Parser.tokenizer.selectNext()
-        
-        # if not isinstance(Parser.tokenizer.next, EndIfToken):
-        #   raise SyntaxError(f"You must finish a function declaration with 'end'. Received: {Parser.tokenizer.next._value}")
-        
-        # Parser.tokenizer.selectNext()
-        # statement = FunctionDeclarationNode(
-        #   value=function_return_type, 
-        #   children=[function_identifier, *function_args, function_body]
-        # )
 
       elif isinstance(Parser.tokenizer.next, ReturnToken):
         rel_expression_node = Parser.parseRelExpression()
@@ -464,10 +510,6 @@ class Parser():
         if not isinstance(Parser.tokenizer.next, LeftBarcesToken):
           raise SyntaxError(f"You must open an while block with '{{'. Received: {Parser.tokenizer.next._value}")
         
-        # Parser.tokenizer.selectNext()
-        # if not isinstance(Parser.tokenizer.next, BreakLineToken):
-        #   raise SyntaxError(f"You must use a break line after while conditional. Received: {Parser.tokenizer.next._value}")
-        
         Parser.tokenizer.selectNext()
         block = BlockNode()
 
@@ -481,23 +523,6 @@ class Parser():
         
         Parser.tokenizer.selectNext()
         statement.children.append(block)
-
-        # if isinstance(Parser.tokenizer.next, BreakLineToken):
-        #   Parser.tokenizer.selectNext()
-        #   block = BlockNode()
-
-        #   while is_statement_token(Parser.tokenizer.next):
-        #     statement_loop = Parser.parseStatement()
-        #     block.children.append(statement_loop)
-        #     Parser.tokenizer.selectNext()
-          
-        #   if isinstance(Parser.tokenizer.next, EndIfToken):
-        #     Parser.tokenizer.selectNext()
-        #     statement.children.append(block)
-        #   else:
-        #     raise SyntaxError(f"You must finish a while looping with 'end'. Received: {Parser.tokenizer.next._value}")
-        # else:
-        #   raise SyntaxError(f"After while conditional you must use a break line token. Received: {Parser.tokenizer.next._value}", )
 
       elif isinstance(Parser.tokenizer.next, IfToken):
         statement = ConditionalNode("if")
@@ -515,10 +540,6 @@ class Parser():
         Parser.tokenizer.selectNext()
         if not isinstance(Parser.tokenizer.next, LeftBarcesToken):
           raise SyntaxError(f"You must start an if block with '{{'. Received: {Parser.tokenizer.next._value}")
-        
-        # Parser.tokenizer.selectNext()
-        # if not isinstance(Parser.tokenizer.next, BreakLineToken):
-        #   raise SyntaxError(f"You must use a break line after if declaration. Received: {Parser.tokenizer.next._value}")
         
         Parser.tokenizer.selectNext()
         block = BlockNode()
@@ -539,14 +560,9 @@ class Parser():
 
           if not isinstance(Parser.tokenizer.next, LeftBarcesToken):
             raise SyntaxError(f"You must start an else block with '{{'. Received: {Parser.tokenizer.next._value}")
-            
-          # Parser.tokenizer.selectNext()
-          # if not isinstance(Parser.tokenizer.next, BreakLineToken):
-          #   raise SyntaxError(f"You must use a break line after else declaration. Received: {Parser.tokenizer.next._value}")
           
           Parser.tokenizer.selectNext()
 
-          # TODO: Fix this (use block node)
           else_block = BlockNode()
           while is_statement_token(Parser.tokenizer.next):
             else_statement_loop = Parser.parseStatement()
@@ -560,43 +576,6 @@ class Parser():
             raise SyntaxError(f"You must close an else block with '}}'. Received: {Parser.tokenizer.next._value}")
           
           Parser.tokenizer.selectNext()
-
-        # if isinstance(Parser.tokenizer.next, BreakLineToken):
-        #   Parser.tokenizer.selectNext()
-        #   block = BlockNode()
-
-        #   while is_statement_token(Parser.tokenizer.next):
-        #     statement_loop = Parser.parseStatement()
-        #     block.children.append(statement_loop)
-        #     Parser.tokenizer.selectNext()
-
-        #   statement.children.append(block)
-          
-        #   # Após statement, pode vir ou não um 'else', seguindo do 'end'.
-        #   if isinstance(Parser.tokenizer.next, ElseToken):
-        #     else_statement = ConditionalNode("else")
-
-        #     Parser.tokenizer.selectNext()
-
-        #     if isinstance(Parser.tokenizer.next, BreakLineToken):
-        #       Parser.tokenizer.selectNext()
-
-        #       while is_statement_token(Parser.tokenizer.next):
-        #         else_statement_loop = Parser.parseStatement()
-        #         else_statement.children.append(else_statement_loop)
-        #         Parser.tokenizer.selectNext()
-
-        #       statement.children.append(else_statement)
-        #     else:
-        #       raise SyntaxError(f"After 'else' conditional you must use a break line token. Received: {Parser.tokenizer.next._value}")
-          
-        #   # Após ou não o 'else', vem o 'end'
-        #   if isinstance(Parser.tokenizer.next, EndIfToken):
-        #     Parser.tokenizer.selectNext()
-        #   else:
-        #     raise SyntaxError(f"You must finish a 'if' looping with 'end'. Received: {Parser.tokenizer.next._value}")
-        # else:
-        #   raise SyntaxError(f"You must finish an 'if' conditional with '\\n'. Token found: {Parser.tokenizer.next._value}")
       
       if isinstance(Parser.tokenizer.next, BreakLineToken):
         return statement

@@ -161,6 +161,15 @@ class DotToken(Token):
     return self._value
 
 
+class FullArrowToken(Token):
+  def __init__(self) -> None:
+    super().__init__("=>")
+  
+  @property
+  def value(self) -> str:
+    return self._value
+
+
 # ------- Tokens de outros sinais -------
 class ParenthesisToken(Token):
   def __init__(self) -> None:
