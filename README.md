@@ -22,34 +22,27 @@ BLOCK = { STATEMENT } ;
 STATEMENT = ( λ | ASSIGNMENT | STDOUT | WHILE | IF | FUNCTION_DEC | FUNCTION_ARROW_DEC | RETURN | FUNCTION_CALL ), "\n" ;
 
 ASSIGNMENT = ( CREATING | SETTING ) ;
-
 CREATING = "const", IDENTIFIER, ":", TYPE, [ "=", RELEXPRESSION ] ;
+SETTING = IDENTIFIER, "=", RELEXPRESSION ;
 
 TYPE = "integer" | "string" ;
-
-SETTING = IDENTIFIER, "=", RELEXPRESSION ;
 
 STDOUT = "stdout", "(", [ RELEXPRESSION, { ",", RELEXPRESSION } ], ")" ;
 
 WHILE = "(", RELEXPRESSION, ")", "{", BLOCK, "}" ;
-
 IF = "(", RELEXPRESSION, ")", "{", BLOCK, "}", [ ELSE ] ;
-
 ELSE = "else", "{", BLOCK, "}" ;
 
 FUNCTION_ARROW_DEC = "const", IDENTIFIER, "=", "(", [FUNCTION_PARAMETER], ")", ":", TYPE, "=>", "{", BLOCK, "}";
-
 FUNCTION_DEC = "def", IDENTIFIER, "(", [FUNCTION_PARAMETER], ")", ":", TYPE, "{", BLOCK, "}";
-
 FUNCTION_PARAMETER = TYPE, IDENTIFIER, { ",", TYPE, IDENTIFIER };
-
 RETURN = "return", RELEXPRESSION;
 
 FUNCTION_CALL = IDENTIFIER, "(", [ RELEXPRESSION, { ",", RELEXPRESSION } ] ,")";
 
-RELEXPRESSION = EXPRESSION, { ( "==" | ">" | "<" | ">=" | "<=" | "=>" | "." ), EXPRESSION }
-EXPRESSION = TERM, { ("+" | "-" | "||"), TERM } ;
-TERM = FACTOR, { ("*" | "/" | "&&"), FACTOR } ;
+RELEXPRESSION = EXPRESSION, { ( "==" | "!=" | ">" | "<" | ">=" | "<=" | "." ), EXPRESSION }
+EXPRESSION = TERM, { ("+" | "-" | "or"), TERM } ;
+TERM = FACTOR, { ("*" | "/" | "and"), FACTOR } ;
 FACTOR = (("+" | "-" | "!"), FACTOR) | NUMBER | STRING | "(", RELEXPRESSION, ")" | IDENTIFIER, ["(", RELEXPR, {",", RELEXPR} ,")"] | ("input", "(", ")") ;
 
 IDENTIFIER = LETTER, { LETTER | DIGIT | "_" } ;
