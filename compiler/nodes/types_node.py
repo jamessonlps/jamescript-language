@@ -1,12 +1,12 @@
-from nodes import Node
-from ..types._types import TypeValue
+from nodes.nodes import Node
+from _types._types import TypeValue
 
 class IntVal(Node):
   def __init__(self, value: int) -> None:
     super().__init__(value, children=[])
   
   def evaluate(self, symbol_table) -> TypeValue:
-    return TypeValue("Int", self.value)
+    return TypeValue("integer", self.value)
 
 
 class StrVal(Node):
@@ -14,4 +14,4 @@ class StrVal(Node):
     super().__init__(value, children=[])
   
   def evaluate(self, symbol_table) -> TypeValue:
-    return TypeValue("String", self.value)
+    return TypeValue("string", self.value)

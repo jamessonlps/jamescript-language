@@ -1,6 +1,6 @@
-from nodes import Node
+from nodes.nodes import Node
 from typing import List
-from ..types._types import TypeValue
+from _types._types import TypeValue
 
 class ReturnNode(Node):
   """

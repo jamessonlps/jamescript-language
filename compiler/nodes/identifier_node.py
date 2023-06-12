@@ -1,5 +1,5 @@
-from nodes import Node
-from ..types._types import TypeValue
+from nodes.nodes import Node
+from _types._types import TypeValue
 
 class IdentifierNode(Node):
   """

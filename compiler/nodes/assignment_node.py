@@ -1,4 +1,4 @@
-from nodes import Node
+from nodes.nodes import Node
 from typing import List
 
 class AssignmentNode(Node):

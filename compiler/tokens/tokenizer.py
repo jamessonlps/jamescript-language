@@ -1,10 +1,10 @@
 from typing import Tuple
-from tokens import *
+from tokens.tokens import *
 
 
 reserveds = {
-  "stdout": PrintlnToken,
-  "input": ReadlineToken,
+  "stdout": StdoutToken,
+  "input": InputToken,
   "while": WhileToken,
   "if": IfToken,
   "else": ElseToken,
@@ -13,6 +13,9 @@ reserveds = {
   "string": StringTypeToken,
   "def": FunctionDeclarationToken,
   "return": ReturnToken,
+  "and": LogicAndToken,
+  "or": LogicOrToken,
+  "const": VariableInitializationToken
 }
 
 
@@ -94,23 +97,23 @@ class Tokenizer():
       next_token = NumberToken(int(number_string))
 
 
-    elif current_token == "&":
-      position += 1
-      current_token = self.source[position]
-      if current_token == "&":
-        next_token = LogicAndToken()
-        position += 1
-      else:
-        raise TypeError("Invalid token. Did you mean '&&'?")
+    # elif current_token == "&":
+    #   position += 1
+    #   current_token = self.source[position]
+    #   if current_token == "&":
+    #     next_token = LogicAndToken()
+    #     position += 1
+    #   else:
+    #     raise TypeError("Invalid token. Did you mean '&&'?")
     
-    elif current_token == "|":
-      position += 1
-      current_token = self.source[position]
-      if current_token == "|":
-        next_token = LogicOrToken()
-        position += 1
-      else:
-        raise TypeError("Invalid token. Did you mean '||'?")
+    # elif current_token == "|":
+    #   position += 1
+    #   current_token = self.source[position]
+    #   if current_token == "|":
+    #     next_token = LogicOrToken()
+    #     position += 1
+    #   else:
+    #     raise TypeError("Invalid token. Did you mean '||'?")
     
     elif current_token == "=":
       position += 1
@@ -174,6 +177,14 @@ class Tokenizer():
     
     elif current_token == ")":
       next_token = RightParenthesisToken()
+      position += 1
+
+    elif current_token == "{":
+      next_token = LeftBarcesToken()
+      position += 1
+    
+    elif current_token == "}":
+      next_token = RightBarcesToken()
       position += 1
     
     elif current_token == "\0":

@@ -1,4 +1,4 @@
-from ..types._types import TypeValue 
+from _types._types import TypeValue 
 
 class SymbolTable:
   """

@@ -1,5 +1,5 @@
-from nodes import Node
-from ..types._types import TypeValue
+from nodes.nodes import Node
+from _types._types import TypeValue
 
 class VariableDeclarationNode(Node):
   """
@@ -16,9 +16,9 @@ class VariableDeclarationNode(Node):
       item = TypeValue(self.value, self.children[1].evaluate(symbol_table).value)
       symbol_table.create(self.children[0].value, item)
     else:
-      if self.value == "Int":
+      if self.value == "integer":
         item = TypeValue(self.value, 0)
-      elif self.value == "String":
+      elif self.value == "string":
         item = TypeValue(self.value, "")
       else:
         raise SyntaxError(f"Invalid type of variable declaration: {self.value} :: {self.children[0].value}")

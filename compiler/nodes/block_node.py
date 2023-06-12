@@ -1,4 +1,5 @@
-from nodes import Node, NoOp
+from nodes.nodes import Node
+from nodes.ops_node import NoOp
 
 class BlockNode(Node):
   def __init__(self, value="block") -> None:

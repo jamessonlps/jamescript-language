@@ -1,5 +1,5 @@
-from nodes import Node
-from nodes import SymbolTable
+from nodes.nodes import Node
+from tables.symbol_table import SymbolTable
     
 
 class ConditionalNode(Node):

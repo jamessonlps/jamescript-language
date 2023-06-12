@@ -1,5 +1,5 @@
-from nodes import Node
-from ..types._types import TypeValue
+from nodes.nodes import Node
+from _types._types import TypeValue
 
 class BinOp(Node):
   def __init__(self, value, children) -> None:
@@ -10,37 +10,37 @@ class BinOp(Node):
     Evaluate a binary operation between two integers
     """
     if self.value == "+":
-      return TypeValue("Int", left + right)
+      return TypeValue("integer", left + right)
     
     elif self.value == "-":
-      return TypeValue("Int", left - right)
+      return TypeValue("integer", left - right)
     
     elif self.value == "*":
-      return TypeValue("Int", left * right)
+      return TypeValue("integer", left * right)
     
     elif (self.value == "/"):
-      return TypeValue("Int", left // right)
+      return TypeValue("integer", left // right)
   
     elif (self.value == ">"):
       result = 1 if left > right else 0
-      return TypeValue("Int", result)
+      return TypeValue("integer", result)
     
     elif (self.value == "<"):
       result = 1 if left < right else 0
-      return TypeValue("Int", result)
+      return TypeValue("integer", result)
     
     elif (self.value == "&&"):
-      return TypeValue("Int", left and right)
+      return TypeValue("integer", left and right)
     
     elif (self.value == "||"):
-      return TypeValue("Int", left or right)
+      return TypeValue("integer", left or right)
     
     elif (self.value == "=="):
       result = 1 if left == right else 0
-      return TypeValue("Int", result)
+      return TypeValue("integer", result)
     
     elif (self.value == "."):
-      return TypeValue("String", str(left) + str(right))
+      return TypeValue("string", str(left) + str(right))
     
   def evaluate_str(self, left, right) -> TypeValue:
     """
@@ -48,28 +48,31 @@ class BinOp(Node):
     """
     if (self.value == "=="):
       result = 1 if left == right else 0
-      return TypeValue("Int", result)
+      return TypeValue("integer", result)
     
     elif (self.value == ">"):
       result = 1 if left > right else 0
-      return TypeValue("Int", result)
+      return TypeValue("integer", result)
     
     elif (self.value == "<"):
       result = 1 if left < right else 0
-      return TypeValue("Int", result)
+      return TypeValue("integer", result)
     
     elif (self.value == "."):
-      return TypeValue("String", str(left) + str(right))
+      return TypeValue("string", str(left) + str(right))
+    
+    else:
+      raise SyntaxError(f"Invalid operation between strings: {left} {self.value} {right}")
 
   def evaluate_any(self, left, right) -> TypeValue:
     """
     Evaluate a binary operation between two different types
     """
     if (self.value == "."):
-      return TypeValue("String", str(left) + str(right))
+      return TypeValue("string", str(left) + str(right))
     elif (self.value == "=="):
       result = 1 if left == right else 0
-      return TypeValue("Int", result)
+      return TypeValue("integer", result)
     raise SyntaxError(f"Invalid operation: {left} {self.value} {right}")
 
   def evaluate(self, symbol_table) -> TypeValue:
@@ -77,11 +80,11 @@ class BinOp(Node):
     type_right, right = self.children[1].evaluate(symbol_table).instance
 
     # Operações entre inteiros
-    if ((type_left == type_right) and type_left == "Int"):
+    if ((type_left == type_right) and type_left == "integer"):
       return self.evaluate_int(left, right)
     
     # Operações entre strings
-    elif ((type_left == type_right) and type_left == "String"):
+    elif ((type_left == type_right) and type_left == "string"):
       return self.evaluate_str(left, right)
     
     # Operação entre qualquer tipo
@@ -98,11 +101,11 @@ class UnOp(Node):
 
   def evaluate(self, symbol_table) -> TypeValue:
     if (self.value == "+"):
-      return TypeValue("Int", self.children[0].evaluate(symbol_table).value)
+      return TypeValue("integer", self.children[0].evaluate(symbol_table).value)
     elif (self.value == "-"):
-      return TypeValue("Int", -self.children[0].evaluate(symbol_table).value)
+      return TypeValue("integer", -self.children[0].evaluate(symbol_table).value)
     elif (self.value == "!"):
-      return TypeValue("Int", not self.children[0].evaluate(symbol_table).value)
+      return TypeValue("integer", not self.children[0].evaluate(symbol_table).value)
     else:
       raise SyntaxError(f"Invalid unary operation: value = {self.value} :: children = {self.children[0]}")
 

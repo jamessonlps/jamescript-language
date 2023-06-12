@@ -1,7 +1,8 @@
-from nodes import Node
+from nodes.nodes import Node
 from typing import List
-from nodes import function_table, SymbolTable
-from ..types._types import TypeValue
+from tables.symbol_table import SymbolTable
+from tables.function_table import function_table
+from _types._types import TypeValue
 
 class FunctionCallNode(Node):
   """

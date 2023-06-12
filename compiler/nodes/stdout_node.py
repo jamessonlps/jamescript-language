@@ -1,4 +1,4 @@
-from nodes import Node
+from nodes.nodes import Node
 
 class StdoutNode(Node):
   def __init__(self) -> None:

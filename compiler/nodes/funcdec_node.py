@@ -1,6 +1,6 @@
-from nodes import Node
+from nodes.nodes import Node
 from typing import List
-from nodes import function_table
+from tables.function_table import function_table
 
 
 class FunctionDeclarationNode(Node):

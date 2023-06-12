@@ -189,6 +189,24 @@ class CompareEqualToToken(Token):
     return self._value
 
 
+class LeftBarcesToken(Token):
+  def __init__(self) -> None:
+    super().__init__("{")
+  
+  @property
+  def value(self) -> str:
+    return self._value
+
+
+class RightBarcesToken(Token):
+  def __init__(self) -> None:
+    super().__init__("}")
+  
+  @property
+  def value(self) -> str:
+    return self._value
+
+
 class CompareLessThenToken(Token):
   def __init__(self) -> None:
     super().__init__("<")
@@ -209,7 +227,7 @@ class CompareGreaterThenToken(Token):
 
 class LogicOrToken(Token):
   def __init__(self) -> None:
-    super().__init__("||")
+    super().__init__("or")
   
   @property
   def value(self) -> str:
@@ -218,7 +236,7 @@ class LogicOrToken(Token):
 
 class LogicAndToken(Token):
   def __init__(self) -> None:
-    super().__init__("&&")
+    super().__init__("and")
   
   @property
   def value(self) -> str:
@@ -234,7 +252,7 @@ class RightParenthesisToken(ParenthesisToken):
     return ")"
 
 
-class PrintlnToken(Token):
+class StdoutToken(Token):
   def __init__(self) -> None:
     super().__init__("stdout")
   
@@ -243,9 +261,18 @@ class PrintlnToken(Token):
     return self._value
   
 
-class ReadlineToken(Token):
+class InputToken(Token):
   def __init__(self) -> None:
     return super().__init__("input")
+
+  @property
+  def value(self) -> str:
+    return self._value
+
+
+class VariableInitializationToken(Token):
+  def __init__(self) -> None:
+    return super().__init__("const")
 
   @property
   def value(self) -> str:

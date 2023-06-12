@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Union, List
 
-from ..tables.symbol_table import SymbolTable
-from ..tables.function_table import function_table
-from ..types._types import TypeValue
+from tables.symbol_table import SymbolTable
+from tables.function_table import function_table
+from _types._types import TypeValue
 
 
 class Node(ABC):

@@ -1,8 +1,8 @@
-from typing import Any, Union
+from typing import Union
 
 class TypeValue():
   def __init__(self, _type: str, value: Union[int, str]) -> None:
-    if _type not in ["Int", "String"]:
+    if _type not in ["integer", "string"]:
       raise ValueError(f"Invalid type {_type}")
     self._type = _type
     self._value = value
