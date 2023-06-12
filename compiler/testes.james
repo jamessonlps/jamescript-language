@@ -3,8 +3,12 @@
 const x : integer = 1
 const y : integer = 10
 
-while (x < y) {
-  stdout("x =", x)
+while (x <= y) {
+  if (y > x) {
+    stdout("De fato x <= y:", x, y)
+  } else {
+    stdout("Agora vai!!!")
+  }
   x = x + 1
 }
 

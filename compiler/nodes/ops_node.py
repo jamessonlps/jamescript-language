@@ -28,6 +28,14 @@ class BinOp(Node):
     elif (self.value == "<"):
       result = 1 if left < right else 0
       return TypeValue("integer", result)
+
+    elif (self.value == ">="):
+      result = 1 if left >= right else 0
+      return TypeValue("integer", result)
+    
+    elif (self.value == "<="):
+      result = 1 if left <= right else 0
+      return TypeValue("integer", result)
     
     elif (self.value == "&&"):
       return TypeValue("integer", left and right)
@@ -37,6 +45,10 @@ class BinOp(Node):
     
     elif (self.value == "=="):
       result = 1 if left == right else 0
+      return TypeValue("integer", result)
+
+    elif (self.value == "!="):
+      result = 1 if left != right else 0
       return TypeValue("integer", result)
     
     elif (self.value == "."):

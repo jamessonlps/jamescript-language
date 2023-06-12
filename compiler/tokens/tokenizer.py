@@ -127,6 +127,42 @@ class Tokenizer():
       else:
         raise TypeError("Invalid token. Token received after '=': ", current_token)
     
+    elif current_token == "!":
+      position += 1
+      current_token = self.source[position]
+      if current_token == "=":
+        next_token = CompareNotEqualToToken()
+        position += 1
+      elif current_token.isspace():
+        next_token = DenialToken()
+        position += 1
+      else:
+        raise TypeError("Invalid token. Token received after '!': ", current_token)
+    
+    elif current_token == "<":
+      position += 1
+      current_token = self.source[position]
+      if current_token == "=":
+        next_token = CompareLessThenOrEqualToToken()
+        position += 1
+      elif current_token.isspace():
+        next_token = CompareLessThenToken()
+        position += 1
+      else:
+        raise TypeError("Invalid token. Token received after '<': ", current_token)
+    
+    elif current_token == ">":
+      position += 1
+      current_token = self.source[position]
+      if current_token == "=":
+        next_token = CompareGreaterThenOrEqualToToken()
+        position += 1
+      elif current_token.isspace():
+        next_token = CompareGreaterThenToken()
+        position += 1
+      else:
+        raise TypeError("Invalid token. Token received after '>': ", current_token)
+    
     elif current_token == "\n":
       next_token = BreakLineToken()
       position += 1
@@ -157,18 +193,6 @@ class Tokenizer():
     
     elif current_token == "/":
       next_token = DivisionToken()
-      position += 1
-    
-    elif current_token == "!":
-      next_token = DenialToken()
-      position += 1
-    
-    elif current_token == "<":
-      next_token = CompareLessThenToken()
-      position += 1
-    
-    elif current_token == ">":
-      next_token = CompareGreaterThenToken()
       position += 1
     
     elif current_token == "(":

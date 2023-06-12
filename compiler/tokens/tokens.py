@@ -189,6 +189,15 @@ class CompareEqualToToken(Token):
     return self._value
 
 
+class CompareNotEqualToToken(Token):
+  def __init__(self) -> None:
+    super().__init__("!=")
+  
+  @property
+  def value(self) -> str:
+    return self._value
+
+
 class LeftBarcesToken(Token):
   def __init__(self) -> None:
     super().__init__("{")
@@ -219,6 +228,24 @@ class CompareLessThenToken(Token):
 class CompareGreaterThenToken(Token):
   def __init__(self) -> None:
     super().__init__(">")
+  
+  @property
+  def value(self) -> str:
+    return self._value
+  
+
+class CompareLessThenOrEqualToToken(Token):
+  def __init__(self) -> None:
+    super().__init__("<=")
+  
+  @property
+  def value(self) -> str:
+    return self._value
+
+
+class CompareGreaterThenOrEqualToToken(Token):
+  def __init__(self) -> None:
+    super().__init__(">=")
   
   @property
   def value(self) -> str:

@@ -64,7 +64,31 @@ class Parser():
           else:
             raise SyntaxError("After '<', the next token shoud be a valid factor token, but received: ", Parser.tokenizer.next)
         
-        if isinstance(Parser.tokenizer.next, (CompareEqualToToken, CompareLessThenToken, CompareGreaterThenToken)):
+        elif isinstance(Parser.tokenizer.next, CompareGreaterThenOrEqualToToken):
+          Parser.tokenizer.selectNext()
+          if is_factor_token(Parser.tokenizer.next):
+            expression2 = Parser.parseExpression()
+            expression = BinOp(value=">=", children=[expression, expression2])
+          else:
+            raise SyntaxError("After '>=', the next token shoud be a valid factor token, but received: ", Parser.tokenizer.next)
+          
+        elif isinstance(Parser.tokenizer.next, CompareLessThenOrEqualToToken):
+          Parser.tokenizer.selectNext()
+          if is_factor_token(Parser.tokenizer.next):
+            expression2 = Parser.parseExpression()
+            expression = BinOp(value="<=", children=[expression, expression2])
+          else:
+            raise SyntaxError("After '<=', the next token shoud be a valid factor token, but received: ", Parser.tokenizer.next)
+        
+        elif isinstance(Parser.tokenizer.next, CompareNotEqualToToken):
+          Parser.tokenizer.selectNext()
+          if is_factor_token(Parser.tokenizer.next):
+            expression2 = Parser.parseExpression()
+            expression = BinOp(value="!=", children=[expression, expression2])
+          else:
+            raise SyntaxError("After '!=', the next token shoud be a valid factor token, but received: ", Parser.tokenizer.next)
+
+        if isinstance(Parser.tokenizer.next, (CompareEqualToToken, CompareLessThenToken, CompareGreaterThenToken, CompareGreaterThenOrEqualToToken, CompareLessThenOrEqualToToken, CompareNotEqualToToken)):
           pass
         else:
           valid_expression = False
