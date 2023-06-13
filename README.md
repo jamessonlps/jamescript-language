@@ -60,9 +60,9 @@ Let's take a look at some examples to showcase the power and flexibility of Jame
 Jamescript supports basic mathematical operations such as addition, subtraction, multiplication, and division.
 
 ```ts
-const x : integer = 5 + 3; // x = 8
-const y : integer = x * 2; // y = 16
-const z : integer = y / 4; // z = 4
+const x : integer = 5 + 3 // x = 8
+const y : integer = x * 2 // y = 16
+const z : integer = y / 4 // z = 4
 ```
 
 ### Working with Integers and Strings
@@ -70,8 +70,11 @@ const z : integer = y / 4; // z = 4
 Jamescript allows you to work with both integers and strings seamlessly.
 
 ```ts
-const number : integer = 42;
-const message : string = "Hello, world!";
+const number : integer = 42
+const message : string = "Hello, world!"
+
+const compareString : integer = message == "Hello World"
+stdout(compareString) // 0
 ```
 
 ### Working with conditionals
